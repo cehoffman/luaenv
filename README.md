@@ -1,72 +1,67 @@
-# Groom your app’s Ruby environment with rbenv.
+# Groom your app’s Lua environment with luaenv.
 
-Use rbenv to pick a Ruby version for your application and guarantee
-that your development environment matches production. Put rbenv to work
-with [Bundler](http://gembundler.com/) for painless Ruby upgrades and
-bulletproof deployments.
+Use luaenv to pick a Lua version for your application and guarantee
+that your development environment matches production. It works exactly like
+[rbenv](https://github.com/sstephenson/rbenv) since it is rbenv but with lua
+names.
 
-**Powerful in development.** Specify your app's Ruby version once,
+**Powerful in development.** Specify your app's Lua version once,
   in a single file. Keep all your teammates on the same page. No
-  headaches running apps on different versions of Ruby. Just Works™
-  from the command line and with app servers like [Pow](http://pow.cx).
-  Override the Ruby version anytime: just set an environment variable.
+  headaches running apps on different versions of Lua. Just Works™
+  from the command line and with app servers.
+  Override the Lua version anytime: just set an environment variable.
 
 **Rock-solid in production.** Your application's executables are its
-  interface with ops. With rbenv and [Bundler
-  binstubs](https://github.com/sstephenson/rbenv/wiki/Understanding-binstubs)
-  you'll never again need to `cd` in a cron job or Chef recipe to
-  ensure you've selected the right runtime. The Ruby version
-  dependency lives in one place—your app—so upgrades and rollbacks are
-  atomic, even when you switch versions.
+  interface with ops. With luaenv you'll never again need to `cd` in a cron job
+  or Chef recipe to ensure you've selected the right runtime. The Lua version
+  dependency lives in one place—your app—so upgrades and rollbacks are atomic,
+  even when you switch versions.
 
-**One thing well.** rbenv is concerned solely with switching Ruby
+**One thing well.** luaenv is concerned solely with switching Lua
   versions. It's simple and predictable. A rich plugin ecosystem lets
-  you tailor it to suit your needs. Compile your own Ruby versions, or
-  use the [ruby-build](https://github.com/sstephenson/ruby-build)
+  you tailor it to suit your needs. Compile your own Lua versions, or
+  use the [lua-build](https://github.com/cehoffman/lua-build)
   plugin to automate the process. Specify per-application environment
-  variables with [rbenv-vars](https://github.com/sstephenson/rbenv-vars).
+  variables with [luaenv-vars](https://github.com/cehoffman/luaenv-vars).
   See more [plugins on the
-  wiki](https://github.com/sstephenson/rbenv/wiki/Plugins).
-
-[**Why choose rbenv over
-RVM?**](https://github.com/sstephenson/rbenv/wiki/Why-rbenv%3F)
+  wiki](https://github.com/cehoffman/luaenv/wiki/Plugins).
 
 ## Table of Contents
 
 * [How It Works](#how-it-works)
   * [Understanding PATH](#understanding-path)
   * [Understanding Shims](#understanding-shims)
-  * [Choosing the Ruby Version](#choosing-the-ruby-version)
-  * [Locating the Ruby Installation](#locating-the-ruby-installation)
+  * [Choosing the Lua Version](#choosing-the-lua-version)
+  * [Locating the Lua Installation](#locating-the-lua-installation)
 * [Installation](#installation)
   * [Basic GitHub Checkout](#basic-github-checkout)
     * [Upgrading](#upgrading)
   * [Homebrew on Mac OS X](#homebrew-on-mac-os-x)
   * [Neckbeard Configuration](#neckbeard-configuration)
-  * [Uninstalling Ruby Versions](#uninstalling-ruby-versions)
+  * [Uninstalling Lua Versions](#uninstalling-lua-versions)
 * [Command Reference](#command-reference)
-  * [rbenv local](#rbenv-local)
-  * [rbenv global](#rbenv-global)
-  * [rbenv shell](#rbenv-shell)
-  * [rbenv versions](#rbenv-versions)
-  * [rbenv version](#rbenv-version)
-  * [rbenv rehash](#rbenv-rehash)
-  * [rbenv which](#rbenv-which)
-  * [rbenv whence](#rbenv-whence)
+  * [luaenv local](#luaenv-local)
+  * [luaenv global](#luaenv-global)
+  * [luaenv shell](#luaenv-shell)
+  * [luaenv versions](#luaenv-versions)
+  * [luaenv version](#luaenv-version)
+  * [luaenv rehash](#luaenv-rehash)
+  * [luaenv which](#luaenv-which)
+  * [luaenv whence](#luaenv-whence)
 * [Development](#development)
   * [Version History](#version-history)
   * [License](#license)
 
 ## How It Works
 
-At a high level, rbenv intercepts Ruby commands using shim
-executables injected into your `PATH`, determines which Ruby version
+At a high level, luaenv intercepts Lua commands using shim
+executables injected into your `PATH`, determines which Lua version
 has been specified by your application, and passes your commands along
-to the correct Ruby installation.
+to the correct Lua installation.
 
 ### Understanding PATH
 
-When you run a command like `ruby` or `rake`, your operating system
+When you run a command like `lua` or `rake`, your operating system
 searches through a list of directories to find an executable file with
 that name. This list of directories lives in an environment variable
 called `PATH`, with each directory in the list separated by a colon:
@@ -81,162 +76,155 @@ then `/bin`.
 
 ### Understanding Shims
 
-rbenv works by inserting a directory of _shims_ at the front of your
+luaenv works by inserting a directory of _shims_ at the front of your
 `PATH`:
 
-    ~/.rbenv/shims:/usr/local/bin:/usr/bin:/bin
+    ~/.luaenv/shims:/usr/local/bin:/usr/bin:/bin
 
-Through a process called _rehashing_, rbenv maintains shims in that
-directory to match every Ruby command across every installed version
-of Ruby—`irb`, `gem`, `rake`, `rails`, `ruby`, and so on.
+Through a process called _rehashing_, luaenv maintains shims in that
+directory to match every Lua command across every installed version
+of Lua—`luac`, `lake`, `lua`, and so on.
 
 Shims are lightweight executables that simply pass your command along
-to rbenv. So with rbenv installed, when you run, say, `rake`, your
+to luaenv. So with luaenv installed, when you run, say, `luac`, your
 operating system will do the following:
 
-* Search your `PATH` for an executable file named `rake`
-* Find the rbenv shim named `rake` at the beginning of your `PATH`
-* Run the shim named `rake`, which in turn passes the command along to
-  rbenv
+* Search your `PATH` for an executable file named `luac`
+* Find the luaenv shim named `luac` at the beginning of your `PATH`
+* Run the shim named `luac`, which in turn passes the command along to
+  luaenv
 
-### Choosing the Ruby Version
+### Choosing the Lua Version
 
-When you execute a shim, rbenv determines which Ruby version to use by
+When you execute a shim, luaenv determines which Lua version to use by
 reading it from the following sources, in this order:
 
-1. The `RBENV_VERSION` environment variable, if specified. You can use
-   the [`rbenv shell`](#rbenv-shell) command to set this environment
+1. The `LUAENV_VERSION` environment variable, if specified. You can use
+   the [`luaenv shell`](#luaenv-shell) command to set this environment
    variable in your current shell session.
 
-2. The application-specific `.ruby-version` file in the current
+2. The application-specific `.lua-version` file in the current
    directory, if present. You can modify the current directory's
-   `.ruby-version` file with the [`rbenv local`](#rbenv-local)
+   `.lua-version` file with the [`luaenv local`](#luaenv-local)
    command.
 
-3. The first `.ruby-version` file found by searching each parent
+3. The first `.lua-version` file found by searching each parent
    directory until reaching the root of your filesystem, if any.
 
-4. The global `~/.rbenv/version` file. You can modify this file using
-   the [`rbenv global`](#rbenv-global) command. If the global version
-   file is not present, rbenv assumes you want to use the "system"
-   Ruby—i.e. whatever version would be run if rbenv weren't in your
+4. The global `~/.luaenv/version` file. You can modify this file using
+   the [`luaenv global`](#luaenv-global) command. If the global version
+   file is not present, luaenv assumes you want to use the "system"
+   Lua—i.e. whatever version would be run if luaenv weren't in your
    path.
 
-### Locating the Ruby Installation
+### Locating the Lua Installation
 
-Once rbenv has determined which version of Ruby your application has
-specified, it passes the command along to the corresponding Ruby
+Once luaenv has determined which version of Lua your application has
+specified, it passes the command along to the corresponding Lua
 installation.
 
-Each Ruby version is installed into its own directory under
-`~/.rbenv/versions`. For example, you might have these versions
+Each Lua version is installed into its own directory under
+`~/.luaenv/versions`. For example, you might have these versions
 installed:
 
-* `~/.rbenv/versions/1.8.7-p371/`
-* `~/.rbenv/versions/1.9.3-p327/`
-* `~/.rbenv/versions/jruby-1.7.1/`
+* `~/.luaenv/versions/5.1.5/`
+* `~/.luaenv/versions/5.2.1/`
+* `~/.luaenv/versions/luajit-2.0.1/`
 
-Version names to rbenv are simply the names of the directories in
-`~/.rbenv/versions`.
+Version names to luaenv are simply the names of the directories in
+`~/.luaenv/versions`.
 
 ## Installation
 
-**Compatibility note**: rbenv is _incompatible_ with RVM. Please make
-  sure to fully uninstall RVM and remove any references to it from
-  your shell initialization files before installing rbenv.
-
-If you're on Mac OS X, consider
-[installing with Homebrew](#homebrew-on-mac-os-x).
-
 ### Basic GitHub Checkout
 
-This will get you going with the latest version of rbenv and make it
+This will get you going with the latest version of luaenv and make it
 easy to fork and contribute any changes back upstream.
 
-1. Check out rbenv into `~/.rbenv`.
+1. Check out luaenv into `~/.luaenv`.
 
     ~~~ sh
-    $ git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
+    $ git clone git://github.com/cehoffman/luaenv.git ~/.luaenv
     ~~~
 
-2. Add `~/.rbenv/bin` to your `$PATH` for access to the `rbenv`
+2. Add `~/.luaenv/bin` to your `$PATH` for access to the `luaenv`
    command-line utility.
 
     ~~~ sh
-    $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+    $ echo 'export PATH="$HOME/.luaenv/bin:$PATH"' >> ~/.bash_profile
     ~~~
 
     **Ubuntu note**: Modify your `~/.profile` instead of `~/.bash_profile`.
 
     **Zsh note**: Modify your `~/.zshrc` file instead of `~/.bash_profile`.
 
-3. Add `rbenv init` to your shell to enable shims and autocompletion.
+3. Add `luaenv init` to your shell to enable shims and autocompletion.
 
     ~~~ sh
-    $ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+    $ echo 'eval "$(luaenv init -)"' >> ~/.bash_profile
     ~~~
 
     _Same as in previous step, use `~/.profile` on Ubuntu, `~/.zshrc` for Zsh._
 
 4. Restart your shell as a login shell so the path changes take effect.
-    You can now begin using rbenv.
+    You can now begin using luaenv.
 
     ~~~ sh
     $ exec $SHELL -l
     ~~~
 
-5. Install [ruby-build](https://github.com/sstephenson/ruby-build),
-   which provides an `rbenv install` command that simplifies the
-   process of installing new Ruby versions.
+5. Install [lua-build](https://github.com/cehoffman/lua-build),
+   which provides an `luaenv install` command that simplifies the
+   process of installing new Lua versions.
 
     ~~~
-    $ rbenv install 1.9.3-p327
+    $ luaenv install 5.2.1
     ~~~
 
-   As an alternative, you can download and compile Ruby yourself into
-   `~/.rbenv/versions/`.
+   As an alternative, you can download and compile Lua yourself into
+   `~/.luaenv/versions/`.
 
 6. Rebuild the shim executables. You should do this any time you
-   install a new Ruby executable (for example, when installing a new
-   Ruby version, or when installing a gem that provides a command).
+   install a new Lua executable (for example, when installing a new
+   Lua version, or when installing a gem that provides a command).
 
     ~~~
-    $ rbenv rehash
+    $ luaenv rehash
     ~~~
 
 #### Upgrading
 
-If you've installed rbenv manually using git, you can upgrade your
+If you've installed luaenv manually using git, you can upgrade your
 installation to the cutting-edge version at any time.
 
 ~~~ sh
-$ cd ~/.rbenv
+$ cd ~/.luaenv
 $ git pull
 ~~~
 
-To use a specific release of rbenv, check out the corresponding tag:
+To use a specific release of luaenv, check out the corresponding tag:
 
 ~~~ sh
-$ cd ~/.rbenv
+$ cd ~/.luaenv
 $ git fetch
 $ git checkout v0.3.0
 ~~~
 
 ### Homebrew on Mac OS X
 
-You can also install rbenv using the
+You can also install luaenv using the
 [Homebrew](http://mxcl.github.com/homebrew/) package manager on Mac OS
 X.
 
 ~~~
 $ brew update
-$ brew install rbenv
-$ brew install ruby-build
+$ brew install luaenv
+$ brew install lua-build
 ~~~
 
 To later update these installs, use `upgrade` instead of `install`.
 
-Afterwards you'll still need to add `eval "$(rbenv init -)"` to your
+Afterwards you'll still need to add `eval "$(luaenv init -)"` to your
 profile as stated in the caveats. You'll only ever have to do this
 once.
 
@@ -245,293 +233,175 @@ once.
 Skip this section unless you must know what every line in your shell
 profile is doing.
 
-`rbenv init` is the only command that crosses the line of loading
+`luaenv init` is the only command that crosses the line of loading
 extra commands into your shell. Coming from RVM, some of you might be
-opposed to this idea. Here's what `rbenv init` actually does:
+opposed to this idea. Here's what `luaenv init` actually does:
 
-1. Sets up your shims path. This is the only requirement for rbenv to
+1. Sets up your shims path. This is the only requirement for luaenv to
    function properly. You can do this by hand by prepending
-   `~/.rbenv/shims` to your `$PATH`.
+   `~/.luaenv/shims` to your `$PATH`.
 
 2. Installs autocompletion. This is entirely optional but pretty
-   useful. Sourcing `~/.rbenv/completions/rbenv.bash` will set that
-   up. There is also a `~/.rbenv/completions/rbenv.zsh` for Zsh
+   useful. Sourcing `~/.luaenv/completions/luaenv.bash` will set that
+   up. There is also a `~/.luaenv/completions/luaenv.zsh` for Zsh
    users.
 
 3. Rehashes shims. From time to time you'll need to rebuild your
    shim files. Doing this automatically makes sure everything is up to
-   date. You can always run `rbenv rehash` manually.
+   date. You can always run `luaenv rehash` manually.
 
 4. Installs the sh dispatcher. This bit is also optional, but allows
-   rbenv and plugins to change variables in your current shell, making
-   commands like `rbenv shell` possible. The sh dispatcher doesn't do
+   luaenv and plugins to change variables in your current shell, making
+   commands like `luaenv shell` possible. The sh dispatcher doesn't do
    anything crazy like override `cd` or hack your shell prompt, but if
-   for some reason you need `rbenv` to be a real script rather than a
+   for some reason you need `luaenv` to be a real script rather than a
    shell function, you can safely skip it.
 
-Run `rbenv init -` for yourself to see exactly what happens under the
+Run `luaenv init -` for yourself to see exactly what happens under the
 hood.
 
-### Uninstalling Ruby Versions
+### Uninstalling Lua Versions
 
-As time goes on, Ruby versions you install will accumulate in your
-`~/.rbenv/versions` directory.
+As time goes on, Lua versions you install will accumulate in your
+`~/.luaenv/versions` directory.
 
-To remove old Ruby versions, simply `rm -rf` the directory of the
+To remove old Lua versions, simply `rm -rf` the directory of the
 version you want to remove. You can find the directory of a particular
-Ruby version with the `rbenv prefix` command, e.g. `rbenv prefix
+Lua version with the `luaenv prefix` command, e.g. `luaenv prefix
 1.8.7-p357`.
 
-The [ruby-build](https://github.com/sstephenson/ruby-build) plugin
-provides an `rbenv uninstall` command to automate the removal
+The [lua-build](https://github.com/cehoffman/lua-build) plugin
+provides an `luaenv uninstall` command to automate the removal
 process.
 
 ## Command Reference
 
-Like `git`, the `rbenv` command delegates to subcommands based on its
+Like `git`, the `luaenv` command delegates to subcommands based on its
 first argument. The most common subcommands are:
 
-### rbenv local
+### luaenv local
 
-Sets a local application-specific Ruby version by writing the version
-name to a `.ruby-version` file in the current directory. This version
+Sets a local application-specific Lua version by writing the version
+name to a `.lua-version` file in the current directory. This version
 overrides the global version, and can be overridden itself by setting
-the `RBENV_VERSION` environment variable or with the `rbenv shell`
+the `LUAENV_VERSION` environment variable or with the `luaenv shell`
 command.
 
-    $ rbenv local 1.9.3-p327
+    $ luaenv local 5.1.5
 
-When run without a version number, `rbenv local` reports the currently
+When run without a version number, `luaenv local` reports the currently
 configured local version. You can also unset the local version:
 
-    $ rbenv local --unset
+    $ luaenv local --unset
 
-Previous versions of rbenv stored local version specifications in a
-file named `.rbenv-version`. For backwards compatibility, rbenv will
-read a local version specified in an `.rbenv-version` file, but a
-`.ruby-version` file in the same directory will take precedence.
+Previous versions of luaenv stored local version specifications in a
+file named `.luaenv-version`. For backwards compatibility, luaenv will
+read a local version specified in an `.luaenv-version` file, but a
+`.lua-version` file in the same directory will take precedence.
 
-### rbenv global
+### luaenv global
 
-Sets the global version of Ruby to be used in all shells by writing
-the version name to the `~/.rbenv/version` file. This version can be
-overridden by an application-specific `.ruby-version` file, or by
-setting the `RBENV_VERSION` environment variable.
+Sets the global version of Lua to be used in all shells by writing
+the version name to the `~/.luaenv/version` file. This version can be
+overridden by an application-specific `.lua-version` file, or by
+setting the `LUAENV_VERSION` environment variable.
 
-    $ rbenv global 1.8.7-p352
+    $ luaenv global 5.2.1
 
-The special version name `system` tells rbenv to use the system Ruby
+The special version name `system` tells luaenv to use the system Lua
 (detected by searching your `$PATH`).
 
-When run without a version number, `rbenv global` reports the
+When run without a version number, `luaenv global` reports the
 currently configured global version.
 
-### rbenv shell
+### luaenv shell
 
-Sets a shell-specific Ruby version by setting the `RBENV_VERSION`
+Sets a shell-specific Lua version by setting the `LUAENV_VERSION`
 environment variable in your shell. This version overrides
 application-specific versions and the global version.
 
-    $ rbenv shell jruby-1.7.1
+    $ luaenv shell luajit-2.0.1
 
-When run without a version number, `rbenv shell` reports the current
-value of `RBENV_VERSION`. You can also unset the shell version:
+When run without a version number, `luaenv shell` reports the current
+value of `LUAENV_VERSION`. You can also unset the shell version:
 
-    $ rbenv shell --unset
+    $ luaenv shell --unset
 
-Note that you'll need rbenv's shell integration enabled (step 3 of
+Note that you'll need luaenv's shell integration enabled (step 3 of
 the installation instructions) in order to use this command. If you
 prefer not to use shell integration, you may simply set the
-`RBENV_VERSION` variable yourself:
+`LUAENV_VERSION` variable yourself:
 
-    $ export RBENV_VERSION=jruby-1.7.1
+    $ export LUAENV_VERSION=luajit-2.0.1
 
-### rbenv versions
+### luaenv versions
 
-Lists all Ruby versions known to rbenv, and shows an asterisk next to
+Lists all Lua versions known to luaenv, and shows an asterisk next to
 the currently active version.
 
-    $ rbenv versions
-      1.8.7-p352
-      1.9.2-p290
-    * 1.9.3-p327 (set by /Users/sam/.rbenv/version)
-      jruby-1.7.1
-      rbx-1.2.4
-      ree-1.8.7-2011.03
+    $ luaenv versions
+      5.1.5
+      5.2.1
+    * luajit-2.0.1 (set by /Users/cehoffman/.luaenv/version)
 
-### rbenv version
+### luaenv version
 
-Displays the currently active Ruby version, along with information on
+Displays the currently active Lua version, along with information on
 how it was set.
 
-    $ rbenv version
-    1.8.7-p352 (set by /Volumes/37signals/basecamp/.ruby-version)
+    $ luaenv version
+    luajit-2.0.1 (set by /Users/cehoffman/Projects/lpm/.lua-version)
 
-### rbenv rehash
+### luaenv rehash
 
-Installs shims for all Ruby executables known to rbenv (i.e.,
-`~/.rbenv/versions/*/bin/*`). Run this command after you install a new
-version of Ruby, or install a gem that provides commands.
+Installs shims for all Lua executables known to luaenv (i.e.,
+`~/.luaenv/versions/*/bin/*`). Run this command after you install a new
+version of Lua, or install a rock that provides commands.
 
-    $ rbenv rehash
+    $ luaenv rehash
 
-### rbenv which
+### luaenv which
 
-Displays the full path to the executable that rbenv will invoke when
+Displays the full path to the executable that luaenv will invoke when
 you run the given command.
 
-    $ rbenv which irb
-    /Users/sam/.rbenv/versions/1.9.3-p327/bin/irb
+    $ luaenv which luac
+    /Users/sam/.luaenv/versions/5.2.1/bin/luac
 
-### rbenv whence
+### luaenv whence
 
-Lists all Ruby versions with the given command installed.
+Lists all Lua versions with the given command installed.
 
-    $ rbenv whence rackup
-    1.9.3-p327
-    jruby-1.7.1
-    ree-1.8.7-2011.03
+    $ luaenv whence luac
+    5.1.5
+    5.2.1
 
 ## Development
 
-The rbenv source code is [hosted on
-GitHub](https://github.com/sstephenson/rbenv). It's clean, modular,
+The luaenv source code is [hosted on
+GitHub](https://github.com/cehoffman/luaenv). It's clean, modular,
 and easy to understand, even if you're not a shell hacker.
 
 Please feel free to submit pull requests and file bugs on the [issue
-tracker](https://github.com/sstephenson/rbenv/issues).
+tracker](https://github.com/cehoffman/luaenv/issues).
+
+It is also likely any bugs you find exist in the original source from which
+luaenv has been adapted. Check out
+[rbenv](https://github.com/sstephenson/rbenv) to see if they have a fix that
+should be ported over or need the bug squashed too.
 
 ### Version History
 
-**0.4.0** (January 4, 2013)
+**0.4.0** (March 2, 2013)
 
-* rbenv now prefers `.ruby-version` files to `.rbenv-version` files
-  for specifying local application-specific versions. The
-  `.ruby-version` file has the same format as `.rbenv-version` but is
-  [compatible with other Ruby version
-  managers](https://gist.github.com/1912050).
-* Deprecated `ruby-local-exec` and moved its functionality into the
-  standard `ruby` shim. See the [ruby-local-exec wiki
-  page](https://github.com/sstephenson/rbenv/wiki/ruby-local-exec) for
-  upgrade instructions.
-* Modified shims to include the full path to rbenv so that they can be
-  invoked without having rbenv's bin directory in the `$PATH`.
-* Sped up `rbenv init` by avoiding rbenv reinitialization and by
-  using a simpler indexing approach. (Users of
-  [chef-rbenv](https://github.com/fnichol/chef-rbenv) should upgrade
-  to the latest version to fix a [compatibility
-  issue](https://github.com/fnichol/chef-rbenv/pull/26).)
-* Reworked `rbenv help` so that usage and documentation is stored as a
-  comment in each subcommand, enabling plugin commands to hook into
-  the help system.
-* Added support for full completion of the command line, not just the
-  first argument.
-* Updated installation instructions for Zsh and Ubuntu users.
-* Fixed `rbenv which` and `rbenv prefix` with system Ruby versions.
-* Changed `rbenv exec` to avoid prepending the system Ruby location to
-  `$PATH` to fix issues running system Ruby commands that invoke other
-  commands.
-* Changed `rbenv rehash` to ensure it exits with a 0 status code under
-  normal operation, and to ensure outdated shims are removed first
-  when rehashing.
-* Modified `rbenv rehash` to run `hash -r` afterwards, when shell
-  integration is enabled, to ensure the shell's command cache is
-  cleared.
-* Removed use of the `+=` operator to support older versions of Bash.
-* Adjusted non-bare `rbenv versions` output to include `system`, if
-  present.
-* Improved documentation for installing and uninstalling Ruby
-  versions.
-* Fixed `rbenv versions` not to display a warning if the currently
-  specified version doesn't exist.
-* Fixed an instance of local variable leakage in the `rbenv` shell
-  function wrapper.
-* Changed `rbenv shell` to ensure it exits with a non-zero status on
-  failure.
-* Added `rbenv --version` for printing the current version of rbenv.
-* Added `/usr/lib/rbenv/hooks` to the plugin hook search path.
-* Fixed `rbenv which` to account for path entries with spaces.
-* Changed `rbenv init` to accept option arguments in any order.
-
-**0.3.0** (December 25, 2011)
-
-* Added an `rbenv root` command which prints the value of
-  `$RBENV_ROOT`, or the default root directory if it's unset.
-* Clarified Zsh installation instructions in the Readme.
-* Removed some redundant code in `rbenv rehash`.
-* Fixed an issue with calling `readlink` for paths with spaces.
-* Changed Zsh initialization code to install completion hooks only for
-  interactive shells.
-* Added preliminary support for ksh.
-* `rbenv rehash` creates or removes shims only when necessary instead
-  of removing and re-creating all shims on each invocation.
-* Fixed that `RBENV_DIR`, when specified, would be incorrectly
-  expanded to its parent directory.
-* Removed the deprecated `set-default` and `set-local` commands.
-* Added a `--no-rehash` option to `rbenv init` for skipping the
-  automatic rehash when opening a new shell.
-
-**0.2.1** (October 1, 2011)
-
-* Changed the `rbenv` command to ensure that `RBENV_DIR` is always an
-  absolute path. This fixes an issue where Ruby scripts using the
-  `ruby-local-exec` wrapper would go into an infinite loop when
-  invoked with a relative path from the command line.
-
-**0.2.0** (September 28, 2011)
-
-* Renamed `rbenv set-default` to `rbenv global` and `rbenv set-local`
-  to `rbenv local`. The `set-` commands are deprecated and will be
-  removed in the next major release.
-* rbenv now uses `greadlink` on Solaris.
-* Added a `ruby-local-exec` command which can be used in shebangs in
-  place of `#!/usr/bin/env ruby` to properly set the project-specific
-  Ruby version regardless of current working directory.
-* Fixed an issue with `rbenv rehash` when no binaries are present.
-* Added support for `rbenv-sh-*` commands, which run inside the
-  current shell instead of in a child process.
-* Added an `rbenv shell` command for conveniently setting the
-  `$RBENV_VERSION` environment variable.
-* Added support for storing rbenv versions and shims in directories
-  other than `~/.rbenv` with the `$RBENV_ROOT` environment variable.
-* Added support for debugging rbenv via `set -x` when the
-  `$RBENV_DEBUG` environment variable is set.
-* Refactored the autocompletion system so that completions are now
-  built-in to each command and shared between bash and Zsh.
-* Added support for plugin bundles in `~/.rbenv/plugins` as documented
-  in [issue #102](https://github.com/sstephenson/rbenv/pull/102).
-* Added `/usr/local/etc/rbenv.d` to the list of directories searched
-  for rbenv hooks.
-* Added support for an `$RBENV_DIR` environment variable which
-  defaults to the current working directory for specifying where rbenv
-  searches for local version files.
-
-**0.1.2** (August 16, 2011)
-
-* Fixed rbenv to be more resilient against nonexistent entries in
-  `$PATH`.
-* Made the `rbenv rehash` command operate atomically.
-* Modified the `rbenv init` script to automatically run `rbenv
-  rehash` so that shims are recreated whenever a new shell is opened.
-* Added initial support for Zsh autocompletion.
-* Removed the dependency on egrep for reading version files.
-
-**0.1.1** (August 14, 2011)
-
-* Fixed a syntax error in the `rbenv help` command.
-* Removed `-e` from the shebang in favor of `set -e` at the top of
-  each file for compatibility with operating systems that do not
-  support more than one argument in the shebang.
-
-**0.1.0** (August 11, 2011)
-
+* Converted rbenv and ruby references to luaenv and lua respectively
 * Initial public release.
 
 ### License
 
 (The MIT license)
 
-Copyright (c) 2013 Sam Stephenson
+Copyright (c) 2013 Sam Stephenson, Chris Hoffman
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
