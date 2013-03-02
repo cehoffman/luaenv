@@ -1,33 +1,33 @@
 #!/usr/bin/env bash
-# Summary: Detect the file that sets the current rbenv version
+# Summary: Detect the file that sets the current luaenv version
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
 find_local_version_file() {
   local root="$1"
   while [ -n "$root" ]; do
-    if [ -e "${root}/.ruby-version" ]; then
-      echo "${root}/.ruby-version"
+    if [ -e "${root}/.lua-version" ]; then
+      echo "${root}/.lua-version"
       exit
-    elif [ -e "${root}/.rbenv-version" ]; then
-      echo "${root}/.rbenv-version"
+    elif [ -e "${root}/.luaenv-version" ]; then
+      echo "${root}/.luaenv-version"
       exit
     fi
     root="${root%/*}"
   done
 }
 
-find_local_version_file "$RBENV_DIR"
-[ "$RBENV_DIR" = "$PWD" ] || find_local_version_file "$PWD"
+find_local_version_file "$LUAENV_DIR"
+[ "$LUAENV_DIR" = "$PWD" ] || find_local_version_file "$PWD"
 
-global_version_file="${RBENV_ROOT}/version"
+global_version_file="${LUAENV_ROOT}/version"
 
 if [ -e "$global_version_file" ]; then
   echo "$global_version_file"
-elif [ -e "${RBENV_ROOT}/global" ]; then
-  echo "${RBENV_ROOT}/global"
-elif [ -e "${RBENV_ROOT}/default" ]; then
-  echo "${RBENV_ROOT}/default"
+elif [ -e "${LUAENV_ROOT}/global" ]; then
+  echo "${LUAENV_ROOT}/global"
+elif [ -e "${LUAENV_ROOT}/default" ]; then
+  echo "${LUAENV_ROOT}/default"
 else
   echo "$global_version_file"
 fi

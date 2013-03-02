@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Summary: List hook scripts for a given rbenv command
-# Usage: rbenv hooks <command>
+# Summary: List hook scripts for a given luaenv command
+# Usage: luaenv hooks <command>
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
-# Provide rbenv completions
+# Provide luaenv completions
 if [ "$1" = "--complete" ]; then
   echo exec
   echo rehash
@@ -13,9 +13,9 @@ if [ "$1" = "--complete" ]; then
   exit
 fi
 
-RBENV_COMMAND="$1"
-if [ -z "$RBENV_COMMAND" ]; then
-  rbenv-help --usage hooks >&2
+LUAENV_COMMAND="$1"
+if [ -z "$LUAENV_COMMAND" ]; then
+  luaenv-help --usage hooks >&2
   exit 1
 fi
 
@@ -39,8 +39,8 @@ realpath() {
 }
 
 shopt -s nullglob
-for path in ${RBENV_HOOK_PATH//:/$'\n'}; do
-  for script in $path/"$RBENV_COMMAND"/*.bash; do
+for path in ${LUAENV_HOOK_PATH//:/$'\n'}; do
+  for script in $path/"$LUAENV_COMMAND"/*.bash; do
     echo $(realpath $script)
   done
 done

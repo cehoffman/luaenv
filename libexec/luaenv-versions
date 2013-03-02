@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Summary: List all Ruby versions available to rbenv
-# Usage: rbenv versions [--bare]
+# Summary: List all Lua versions available to luaenv
+# Usage: luaenv versions [--bare]
 #
-# Lists all Ruby versions found in `$RBENV_ROOT/versions/*'.
+# Lists all Lua versions found in `$LUAENV_ROOT/versions/*'.
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
 if [ "$1" = "--bare" ]; then
   hit_prefix=""
@@ -15,24 +15,24 @@ if [ "$1" = "--bare" ]; then
 else
   hit_prefix="* "
   miss_prefix="  "
-  current_version="$(rbenv-version-name || true)"
+  current_version="$(luaenv-version-name || true)"
   include_system="1"
 fi
 
 print_version() {
   if [ "$1" == "$current_version" ]; then
-    echo "${hit_prefix}$(rbenv-version 2>/dev/null)"
+    echo "${hit_prefix}$(luaenv-version 2>/dev/null)"
   else
     echo "${miss_prefix}$1"
   fi
 }
 
 # Include "system" in the non-bare output, if it exists
-if [ -n "$include_system" ] && RBENV_VERSION=system rbenv-which ruby >/dev/null 2>&1; then
+if [ -n "$include_system" ] && LUAENV_VERSION=system luaenv-which lua >/dev/null 2>&1; then
   print_version system
 fi
 
-for path in "${RBENV_ROOT}/versions/"*; do
+for path in "${LUAENV_ROOT}/versions/"*; do
   if [ -d "$path" ]; then
     print_version "${path##*/}"
   fi

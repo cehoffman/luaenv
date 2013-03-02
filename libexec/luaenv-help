@@ -2,7 +2,7 @@
 #
 # Summary: Display help for a command
 #
-# Usage: rbenv help [--usage] COMMAND
+# Usage: luaenv help [--usage] COMMAND
 #
 # Parses and displays help contents from a command's source file.
 #
@@ -13,11 +13,11 @@
 # documentation.
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
 command_path() {
   local command="$1"
-  command -v rbenv-"$command" || command -v rbenv-sh-"$command" || true
+  command -v luaenv-"$command" || command -v luaenv-sh-"$command" || true
 }
 
 extract_initial_comment_block() {
@@ -112,7 +112,7 @@ print_help() {
     if [ -n "$usage" ]; then
       echo "$usage"
     else
-      echo "Usage: rbenv ${command}"
+      echo "Usage: luaenv ${command}"
     fi
     if [ -n "$help" ]; then
       echo
@@ -138,15 +138,15 @@ if [ "$1" = "--usage" ]; then
   shift
 fi
 
-if [ -z "$1" ] || [ "$1" == "rbenv" ]; then
-  echo "Usage: rbenv <command> [<args>]"
+if [ -z "$1" ] || [ "$1" == "luaenv" ]; then
+  echo "Usage: luaenv <command> [<args>]"
   [ -z "$usage" ] || exit
   echo
-  echo "Some useful rbenv commands are:"
+  echo "Some useful luaenv commands are:"
   print_summaries commands local global shell install uninstall rehash version versions which whence
   echo
-  echo "See \`rbenv help <command>' for information on a specific command."
-  echo "For full documentation, see: https://github.com/sstephenson/rbenv#readme"
+  echo "See \`luaenv help <command>' for information on a specific command."
+  echo "For full documentation, see: https://github.com/sstephenson/luaenv#readme"
 else
   command="$1"
   if [ -n "$(command_path "$command")" ]; then
@@ -156,7 +156,7 @@ else
       print_help "$command"
     fi
   else
-    echo "rbenv: no such command \`$command'" >&2
+    echo "luaenv: no such command \`$command'" >&2
     exit 1
   fi
 fi

@@ -3,11 +3,11 @@ set -e
 export -n CDPATH
 
 if [ "$1" = "--debug" ]; then
-  export RBENV_DEBUG=1
+  export LUAENV_DEBUG=1
   shift
 fi
 
-if [ -n "$RBENV_DEBUG" ]; then
+if [ -n "$LUAENV_DEBUG" ]; then
   export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
   set -x
 fi
@@ -30,39 +30,39 @@ abs_dirname() {
   cd "$cwd"
 }
 
-if [ -z "${RBENV_ROOT}" ]; then
-  RBENV_ROOT="${HOME}/.rbenv"
+if [ -z "${LUAENV_ROOT}" ]; then
+  LUAENV_ROOT="${HOME}/.luaenv"
 else
-  RBENV_ROOT="${RBENV_ROOT%/}"
+  LUAENV_ROOT="${LUAENV_ROOT%/}"
 fi
-export RBENV_ROOT
+export LUAENV_ROOT
 
-if [ -z "${RBENV_DIR}" ]; then
-  RBENV_DIR="$(pwd)"
+if [ -z "${LUAENV_DIR}" ]; then
+  LUAENV_DIR="$(pwd)"
 else
-  cd "$RBENV_DIR" 2>/dev/null || {
-    echo "rbenv: cannot change working directory to \`$RBENV_DIR'"
+  cd "$LUAENV_DIR" 2>/dev/null || {
+    echo "luaenv: cannot change working directory to \`$LUAENV_DIR'"
     exit 1
   } >&2
-  RBENV_DIR="$(pwd)"
+  LUAENV_DIR="$(pwd)"
   cd "$OLDPWD"
 fi
-export RBENV_DIR
+export LUAENV_DIR
 
 
 shopt -s nullglob
 
 bin_path="$(abs_dirname "$0")"
-for plugin_bin in "${RBENV_ROOT}/plugins/"*/bin; do
+for plugin_bin in "${LUAENV_ROOT}/plugins/"*/bin; do
   bin_path="${bin_path}:${plugin_bin}"
 done
 export PATH="${bin_path}:${PATH}"
 
-hook_path="${RBENV_HOOK_PATH}:${RBENV_ROOT}/rbenv.d:/usr/local/etc/rbenv.d:/etc/rbenv.d:/usr/lib/rbenv/hooks"
-for plugin_hook in "${RBENV_ROOT}/plugins/"*/etc/rbenv.d; do
+hook_path="${LUAENV_HOOK_PATH}:${LUAENV_ROOT}/luaenv.d:/usr/local/etc/luaenv.d:/etc/luaenv.d:/usr/lib/luaenv/hooks"
+for plugin_hook in "${LUAENV_ROOT}/plugins/"*/etc/luaenv.d; do
   hook_path="${hook_path}:${plugin_hook}"
 done
-export RBENV_HOOK_PATH="$hook_path"
+export LUAENV_HOOK_PATH="$hook_path"
 
 shopt -u nullglob
 
@@ -70,15 +70,15 @@ shopt -u nullglob
 command="$1"
 case "$command" in
 "" | "-h" | "--help" )
-  echo -e "$(rbenv---version)\n$(rbenv-help)" >&2
+  echo -e "$(luaenv---version)\n$(luaenv-help)" >&2
   ;;
 "-v" )
-  exec rbenv---version
+  exec luaenv---version
   ;;
 * )
-  command_path="$(command -v "rbenv-$command" || true)"
+  command_path="$(command -v "luaenv-$command" || true)"
   if [ -z "$command_path" ]; then
-    echo "rbenv: no such command \`$command'" >&2
+    echo "luaenv: no such command \`$command'" >&2
     exit 1
   fi
 

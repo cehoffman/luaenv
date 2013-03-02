@@ -1,54 +1,54 @@
 #!/usr/bin/env bash
 #
-# Summary: Set or show the local application-specific Ruby version
+# Summary: Set or show the local application-specific Lua version
 #
-# Usage: rbenv local <version>
-#        rbenv local --unset
+# Usage: luaenv local <version>
+#        luaenv local --unset
 #
-# Sets the local application-specific Ruby version by writing the
-# version name to a file named `.ruby-version'.
+# Sets the local application-specific Lua version by writing the
+# version name to a file named `.lua-version'.
 #
-# When you run a Ruby command, rbenv will look for a `.ruby-version'
+# When you run a Lua command, luaenv will look for a `.lua-version'
 # file in the current directory and each parent directory. If no such
-# file is found in the tree, rbenv will use the global Ruby version
-# specified with `rbenv global'. A version specified with the
-# `RBENV_VERSION' environment variable takes precedence over local
+# file is found in the tree, luaenv will use the global Lua version
+# specified with `luaenv global'. A version specified with the
+# `LUAENV_VERSION' environment variable takes precedence over local
 # and global versions.
 #
-# For backwards compatibility, rbenv will also read version
-# specifications from `.rbenv-version' files, but a `.ruby-version'
+# For backwards compatibility, luaenv will also read version
+# specifications from `.luaenv-version' files, but a `.lua-version'
 # file in the same directory takes precedence.
 #
-# <version> should be a string matching a Ruby version known to rbenv.
-# The special version string `system' will use your default system Ruby.
-# Run `rbenv versions' for a list of available Ruby versions.
+# <version> should be a string matching a Lua version known to luaenv.
+# The special version string `system' will use your default system Lua.
+# Run `luaenv versions' for a list of available Lua versions.
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
-# Provide rbenv completions
+# Provide luaenv completions
 if [ "$1" = "--complete" ]; then
   echo --unset
   echo system
-  exec rbenv-versions --bare
+  exec luaenv-versions --bare
 fi
 
-RBENV_VERSION="$1"
+LUAENV_VERSION="$1"
 
-if [ "$RBENV_VERSION" = "--unset" ]; then
-  rm -f .ruby-version .rbenv-version
-elif [ -n "$RBENV_VERSION" ]; then
-  if [ "$(RBENV_VERSION= rbenv-version-origin)" -ef .rbenv-version ]; then
-    rm -f .rbenv-version
-    { echo "rbenv: removed existing \`.rbenv-version' file and migrated"
-      echo "       local version specification to \`.ruby-version' file"
+if [ "$LUAENV_VERSION" = "--unset" ]; then
+  rm -f .lua-version .luaenv-version
+elif [ -n "$LUAENV_VERSION" ]; then
+  if [ "$(LUAENV_VERSION= luaenv-version-origin)" -ef .luaenv-version ]; then
+    rm -f .luaenv-version
+    { echo "luaenv: removed existing \`.luaenv-version' file and migrated"
+      echo "       local version specification to \`.lua-version' file"
     } >&2
   fi
-  rbenv-version-file-write .ruby-version "$RBENV_VERSION"
+  luaenv-version-file-write .lua-version "$LUAENV_VERSION"
 else
-  rbenv-version-file-read .ruby-version ||
-  rbenv-version-file-read .rbenv-version ||
-  { echo "rbenv: no local version configured for this directory"
+  luaenv-version-file-read .lua-version ||
+  luaenv-version-file-read .luaenv-version ||
+  { echo "luaenv: no local version configured for this directory"
     exit 1
   } >&2
 fi

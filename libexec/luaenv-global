@@ -1,34 +1,34 @@
 #!/usr/bin/env bash
 #
-# Summary: Set or show the global Ruby version
+# Summary: Set or show the global Lua version
 #
-# Usage: rbenv global <version>
+# Usage: luaenv global <version>
 #
-# Sets the global Ruby version. You can override the global version at
-# any time by setting a directory-specific version with `rbenv local'
-# or by setting the `RBENV_VERSION' environment variable.
+# Sets the global Lua version. You can override the global version at
+# any time by setting a directory-specific version with `luaenv local'
+# or by setting the `LUAENV_VERSION' environment variable.
 #
-# <version> should be a string matching a Ruby version known to rbenv.
-# The special version string `system' will use your default system Ruby.
-# Run `rbenv versions' for a list of available Ruby versions.
+# <version> should be a string matching a Lua version known to luaenv.
+# The special version string `system' will use your default system Lua.
+# Run `luaenv versions' for a list of available Lua versions.
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
-# Provide rbenv completions
+# Provide luaenv completions
 if [ "$1" = "--complete" ]; then
   echo system
-  exec rbenv-versions --bare
+  exec luaenv-versions --bare
 fi
 
-RBENV_VERSION="$1"
-RBENV_VERSION_FILE="${RBENV_ROOT}/version"
+LUAENV_VERSION="$1"
+LUAENV_VERSION_FILE="${LUAENV_ROOT}/version"
 
-if [ -n "$RBENV_VERSION" ]; then
-  rbenv-version-file-write "$RBENV_VERSION_FILE" "$RBENV_VERSION"
+if [ -n "$LUAENV_VERSION" ]; then
+  luaenv-version-file-write "$LUAENV_VERSION_FILE" "$LUAENV_VERSION"
 else
-  rbenv-version-file-read "$RBENV_VERSION_FILE" ||
-  rbenv-version-file-read "${RBENV_ROOT}/global" ||
-  rbenv-version-file-read "${RBENV_ROOT}/default" ||
+  luaenv-version-file-read "$LUAENV_VERSION_FILE" ||
+  luaenv-version-file-read "${LUAENV_ROOT}/global" ||
+  luaenv-version-file-read "${LUAENV_ROOT}/default" ||
   echo system
 fi

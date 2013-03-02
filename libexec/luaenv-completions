@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# Usage: rbenv completions <command> [arg1 arg2...]
+# Usage: luaenv completions <command> [arg1 arg2...]
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
 COMMAND="$1"
 if [ -z "$COMMAND" ]; then
-  rbenv-help --usage completions >&2
+  luaenv-help --usage completions >&2
   exit 1
 fi
 
-COMMAND_PATH="$(command -v "rbenv-$COMMAND" || command -v "rbenv-sh-$COMMAND")"
-if grep -i "^# provide rbenv completions" "$COMMAND_PATH" >/dev/null; then
+COMMAND_PATH="$(command -v "luaenv-$COMMAND" || command -v "luaenv-sh-$COMMAND")"
+if grep -i "^# provide luaenv completions" "$COMMAND_PATH" >/dev/null; then
   shift
   exec "$COMMAND_PATH" --complete "$@"
 fi

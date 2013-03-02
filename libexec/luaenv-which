@@ -2,17 +2,17 @@
 #
 # Summary: Display the full path to an executable
 #
-# Usage: rbenv which <command>
+# Usage: luaenv which <command>
 #
-# Displays the full path to the executable that rbenv will invoke when
+# Displays the full path to the executable that luaenv will invoke when
 # you run the given command.
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
-# Provide rbenv completions
+# Provide luaenv completions
 if [ "$1" = "--complete" ]; then
-  exec rbenv shims --short
+  exec luaenv shims --short
 fi
 
 expand_path() {
@@ -48,34 +48,34 @@ remove_from_path() {
   echo "${result%:}"
 }
 
-RBENV_VERSION="$(rbenv-version-name)"
-RBENV_COMMAND="$1"
+LUAENV_VERSION="$(luaenv-version-name)"
+LUAENV_COMMAND="$1"
 
-if [ -z "$RBENV_COMMAND" ]; then
-  rbenv-help --usage which >&2
+if [ -z "$LUAENV_COMMAND" ]; then
+  luaenv-help --usage which >&2
   exit 1
 fi
 
-if [ "$RBENV_VERSION" = "system" ]; then
-  PATH="$(remove_from_path "${RBENV_ROOT}/shims")"
-  RBENV_COMMAND_PATH="$(command -v "$RBENV_COMMAND" || true)"
+if [ "$LUAENV_VERSION" = "system" ]; then
+  PATH="$(remove_from_path "${LUAENV_ROOT}/shims")"
+  LUAENV_COMMAND_PATH="$(command -v "$LUAENV_COMMAND" || true)"
 else
-  RBENV_COMMAND_PATH="${RBENV_ROOT}/versions/${RBENV_VERSION}/bin/${RBENV_COMMAND}"
+  LUAENV_COMMAND_PATH="${LUAENV_ROOT}/versions/${LUAENV_VERSION}/bin/${LUAENV_COMMAND}"
 fi
 
-for script in $(rbenv-hooks which); do
+for script in $(luaenv-hooks which); do
   source "$script"
 done
 
-if [ -x "$RBENV_COMMAND_PATH" ]; then
-  echo "$RBENV_COMMAND_PATH"
+if [ -x "$LUAENV_COMMAND_PATH" ]; then
+  echo "$LUAENV_COMMAND_PATH"
 else
-  echo "rbenv: $RBENV_COMMAND: command not found" >&2
+  echo "luaenv: $LUAENV_COMMAND: command not found" >&2
 
-  versions="$(rbenv-whence "$RBENV_COMMAND" || true)"
+  versions="$(luaenv-whence "$LUAENV_COMMAND" || true)"
   if [ -n "$versions" ]; then
     { echo
-      echo "The \`$1' command exists in these Ruby versions:"
+      echo "The \`$1' command exists in these Lua versions:"
       echo "$versions" | sed 's/^/  /g'
       echo
     } >&2

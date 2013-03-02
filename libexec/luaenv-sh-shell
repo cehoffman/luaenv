@@ -1,48 +1,48 @@
 #!/usr/bin/env bash
 #
-# Summary: Set or show the shell-specific Ruby version
+# Summary: Set or show the shell-specific Lua version
 #
-# Usage: rbenv shell <version>
-#        rbenv shell --unset
+# Usage: luaenv shell <version>
+#        luaenv shell --unset
 #
-# Sets a shell-specific Ruby version by setting the `RBENV_VERSION'
+# Sets a shell-specific Lua version by setting the `LUAENV_VERSION'
 # environment variable in your shell. This version overrides local
 # application-specific versions and the global version.
 #
-# <version> should be a string matching a Ruby version known to rbenv.
-# The special version string `system' will use your default system Ruby.
-# Run `rbenv versions' for a list of available Ruby versions.
+# <version> should be a string matching a Lua version known to luaenv.
+# The special version string `system' will use your default system Lua.
+# Run `luaenv versions' for a list of available Lua versions.
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
-# Provide rbenv completions
+# Provide luaenv completions
 if [ "$1" = "--complete" ]; then
   echo --unset
   echo system
-  exec rbenv-versions --bare
+  exec luaenv-versions --bare
 fi
 
 version="$1"
 
 if [ -z "$version" ]; then
-  if [ -z "$RBENV_VERSION" ]; then
-    echo "rbenv: no shell-specific version configured" >&2
+  if [ -z "$LUAENV_VERSION" ]; then
+    echo "luaenv: no shell-specific version configured" >&2
     exit 1
   else
-    echo "echo \"\$RBENV_VERSION\""
+    echo "echo \"\$LUAENV_VERSION\""
     exit
   fi
 fi
 
 if [ "$version" = "--unset" ]; then
-  echo "unset RBENV_VERSION"
+  echo "unset LUAENV_VERSION"
   exit
 fi
 
 # Make sure the specified version is installed.
-if rbenv-prefix "$version" >/dev/null; then
-  echo "export RBENV_VERSION=\"${version}\""
+if luaenv-prefix "$version" >/dev/null; then
+  echo "export LUAENV_VERSION=\"${version}\""
 else
   echo "return 1"
   exit 1

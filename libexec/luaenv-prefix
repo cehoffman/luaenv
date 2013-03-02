@@ -1,37 +1,37 @@
 #!/usr/bin/env bash
-# Summary: Display prefix for a Ruby version
-# Usage: rbenv prefix [<version>]
+# Summary: Display prefix for a Lua version
+# Usage: luaenv prefix [<version>]
 #
-# Displays the directory where a Ruby version is installed. If no
-# version is given, `rbenv prefix' displays the location of the
+# Displays the directory where a Lua version is installed. If no
+# version is given, `luaenv prefix' displays the location of the
 # currently selected version.
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
-# Provide rbenv completions
+# Provide luaenv completions
 if [ "$1" = "--complete" ]; then
   echo system
-  exec rbenv-versions --bare
+  exec luaenv-versions --bare
 fi
 
 if [ -n "$1" ]; then
-  export RBENV_VERSION="$1"
-elif [ -z "$RBENV_VERSION" ]; then
-  RBENV_VERSION="$(rbenv-version-name)"
+  export LUAENV_VERSION="$1"
+elif [ -z "$LUAENV_VERSION" ]; then
+  LUAENV_VERSION="$(luaenv-version-name)"
 fi
 
-if [ "$RBENV_VERSION" = "system" ]; then
-  RUBY_PATH="$(rbenv-which ruby)"
-  RUBY_PATH="${RUBY_PATH%/*}"
-  echo "${RUBY_PATH%/bin}"
+if [ "$LUAENV_VERSION" = "system" ]; then
+  LUA_PATH="$(luaenv-which lua)"
+  LUA_PATH="${LUA_PATH%/*}"
+  echo "${LUA_PATH%/bin}"
   exit
 fi
 
-RBENV_PREFIX_PATH="${RBENV_ROOT}/versions/${RBENV_VERSION}"
-if [ ! -d "$RBENV_PREFIX_PATH" ]; then
-  echo "rbenv: version \`${RBENV_VERSION}' not installed" >&2
+LUAENV_PREFIX_PATH="${LUAENV_ROOT}/versions/${LUAENV_VERSION}"
+if [ ! -d "$LUAENV_PREFIX_PATH" ]; then
+  echo "luaenv: version \`${LUAENV_VERSION}' not installed" >&2
   exit 1
 fi
 
-echo "$RBENV_PREFIX_PATH"
+echo "$LUAENV_PREFIX_PATH"

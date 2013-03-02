@@ -1,43 +1,43 @@
 #!/usr/bin/env bash
 #
-# Summary: Run an executable with the selected Ruby version
+# Summary: Run an executable with the selected Lua version
 #
-# Usage: rbenv exec <command> [arg1 arg2...]
+# Usage: luaenv exec <command> [arg1 arg2...]
 #
-# Runs an executable by first preparing PATH so that the selected Ruby
+# Runs an executable by first preparing PATH so that the selected Lua
 # version's `bin' directory is at the front.
 #
-# For example, if the currently selected Ruby version is 1.9.3-p327:
-#   rbenv exec bundle install
+# For example, if the currently selected Lua version is 1.9.3-p327:
+#   luaenv exec bundle install
 #
 # is equivalent to:
-#   PATH="$RBENV_ROOT/versions/1.9.3-p327/bin:$PATH" bundle install
+#   PATH="$LUAENV_ROOT/versions/1.9.3-p327/bin:$PATH" bundle install
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$LUAENV_DEBUG" ] && set -x
 
-# Provide rbenv completions
+# Provide luaenv completions
 if [ "$1" = "--complete" ]; then
-  exec rbenv shims --short
+  exec luaenv shims --short
 fi
 
-export RBENV_VERSION="$(rbenv-version-name)"
-RBENV_COMMAND="$1"
+export LUAENV_VERSION="$(luaenv-version-name)"
+LUAENV_COMMAND="$1"
 
-if [ -z "$RBENV_COMMAND" ]; then
-  rbenv-help --usage exec >&2
+if [ -z "$LUAENV_COMMAND" ]; then
+  luaenv-help --usage exec >&2
   exit 1
 fi
 
-RBENV_COMMAND_PATH="$(rbenv-which "$RBENV_COMMAND")"
-RBENV_BIN_PATH="${RBENV_COMMAND_PATH%/*}"
+LUAENV_COMMAND_PATH="$(luaenv-which "$LUAENV_COMMAND")"
+LUAENV_BIN_PATH="${LUAENV_COMMAND_PATH%/*}"
 
-for script in $(rbenv-hooks exec); do
+for script in $(luaenv-hooks exec); do
   source "$script"
 done
 
 shift 1
-if [ "$RBENV_VERSION" != "system" ]; then
-  export PATH="${RBENV_BIN_PATH}:${PATH}"
+if [ "$LUAENV_VERSION" != "system" ]; then
+  export PATH="${LUAENV_BIN_PATH}:${PATH}"
 fi
-exec -a "$RBENV_COMMAND" "$RBENV_COMMAND_PATH" "$@"
+exec -a "$LUAENV_COMMAND" "$LUAENV_COMMAND_PATH" "$@"
