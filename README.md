@@ -268,7 +268,7 @@ As time goes on, Lua versions you install will accumulate in your
 To remove old Lua versions, simply `rm -rf` the directory of the
 version you want to remove. You can find the directory of a particular
 Lua version with the `luaenv prefix` command, e.g. `luaenv prefix
-1.8.7-p357`.
+luajit-2.0.1`.
 
 The [lua-build](https://github.com/cehoffman/lua-build) plugin
 provides an `luaenv uninstall` command to automate the removal
