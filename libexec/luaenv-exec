@@ -7,11 +7,11 @@
 # Runs an executable by first preparing PATH so that the selected Lua
 # version's `bin' directory is at the front.
 #
-# For example, if the currently selected Lua version is 1.9.3-p327:
-#   luaenv exec bundle install
+# For example, if the currently selected Lua version is 5.2.1
+#   luaenv exec lake install
 #
 # is equivalent to:
-#   PATH="$LUAENV_ROOT/versions/1.9.3-p327/bin:$PATH" bundle install
+#   PATH="$LUAENV_ROOT/versions/5.2.1/bin:$PATH" lake install
 
 set -e
 [ -n "$LUAENV_DEBUG" ] && set -x
