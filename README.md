@@ -19,13 +19,8 @@ names.
 
 **One thing well.** luaenv is concerned solely with switching Lua
   versions. It's simple and predictable. A rich plugin ecosystem lets
-<<<<<<< HEAD
-  you tailor it to suit your needs. Compile your own Lua versions, or
-  use the [lua-build](https://github.com/cehoffman/lua-build)
-=======
   you tailor it to suit your needs. Compile your own Lua versions, or
   use the [lua-build][]
->>>>>>> sstephenson/master
   plugin to automate the process. Specify per-application environment
   variables with [luaenv-vars](https://github.com/cehoffman/luaenv-vars).
   See more [plugins on the
@@ -42,14 +37,9 @@ names.
   * [Basic GitHub Checkout](#basic-github-checkout)
     * [Upgrading](#upgrading)
   * [Homebrew on Mac OS X](#homebrew-on-mac-os-x)
-<<<<<<< HEAD
-  * [Neckbeard Configuration](#neckbeard-configuration)
-  * [Uninstalling Lua Versions](#uninstalling-lua-versions)
-=======
   * [How luaenv hooks into your shell](#how-luaenv-hooks-into-your-shell)
   * [Installing Lua Versions](#installing-lua-versions)
   * [Uninstalling Lua Versions](#uninstalling-lua-versions)
->>>>>>> sstephenson/master
 * [Command Reference](#command-reference)
   * [luaenv local](#luaenv-local)
   * [luaenv global](#luaenv-global)
@@ -114,15 +104,6 @@ reading it from the following sources, in this order:
    the [`luaenv shell`](#luaenv-shell) command to set this environment
    variable in your current shell session.
 
-<<<<<<< HEAD
-2. The application-specific `.lua-version` file in the current
-   directory, if present. You can modify the current directory's
-   `.lua-version` file with the [`luaenv local`](#luaenv-local)
-   command.
-
-3. The first `.lua-version` file found by searching each parent
-   directory until reaching the root of your filesystem, if any.
-=======
 2. The first `.lua-version` file found by searching the directory of the
    script you are executing and each of its parent directories until reaching
    the root of your filesystem.
@@ -131,7 +112,6 @@ reading it from the following sources, in this order:
    directory and each of its parent directories until reaching the root of your
    filesystem. You can modify the `.lua-version` file in the current working
    directory with the [`luaenv local`](#luaenv-local) command.
->>>>>>> sstephenson/master
 
 4. The global `~/.luaenv/version` file. You can modify this file using
    the [`luaenv global`](#luaenv-global) command. If the global version
@@ -166,11 +146,7 @@ easy to fork and contribute any changes back upstream.
 1. Check out luaenv into `~/.luaenv`.
 
     ~~~ sh
-<<<<<<< HEAD
-    $ git clone git://github.com/cehoffman/luaenv.git ~/.luaenv
-=======
-    $ git clone https://github.com/sstephenson/luaenv.git ~/.luaenv
->>>>>>> sstephenson/master
+    $ git clone https://github.com/cehoffman/luaenv.git ~/.luaenv
     ~~~
 
 2. Add `~/.luaenv/bin` to your `$PATH` for access to the `luaenv`
@@ -192,43 +168,17 @@ easy to fork and contribute any changes back upstream.
 
     _Same as in previous step, use `~/.bashrc` on Ubuntu, or `~/.zshrc` for Zsh._
 
-<<<<<<< HEAD
-4. Restart your shell as a login shell so the path changes take effect.
-    You can now begin using luaenv.
-=======
 4. Restart your shell so that PATH changes take effect. (Opening a new
    terminal tab will usually do it.) Now check if luaenv was set up:
->>>>>>> sstephenson/master
 
     ~~~ sh
     $ type luaenv
     #=> "luaenv is a function"
     ~~~
 
-<<<<<<< HEAD
-5. Install [lua-build](https://github.com/cehoffman/lua-build),
-   which provides an `luaenv install` command that simplifies the
-   process of installing new Lua versions.
-
-    ~~~
-    $ luaenv install 5.2.1
-    ~~~
-
-   As an alternative, you can download and compile Lua yourself into
-   `~/.luaenv/versions/`.
-
-6. Rebuild the shim executables. You should do this any time you
-   install a new Lua executable (for example, when installing a new
-   Lua version, or when installing a gem that provides a command).
-
-    ~~~
-    $ luaenv rehash
-    ~~~
-=======
 5. _(Optional)_ Install [lua-build][], which provides the
    `luaenv install` command that simplifies the process of
    [installing new Lua versions](#installing-lua-versions).
->>>>>>> sstephenson/master
 
 #### Upgrading
 
@@ -249,7 +199,7 @@ $ git checkout v0.3.0
 ~~~
 
 If you've [installed via Homebrew](#homebrew-on-mac-os-x), then upgrade
-via its `brew` command:
+via its `brew` command: *Not available yet*
 
 ~~~ sh
 $ brew update
@@ -258,21 +208,6 @@ $ brew upgrade luaenv lua-build
 
 ### Homebrew on Mac OS X
 
-<<<<<<< HEAD
-You can also install luaenv using the
-[Homebrew](http://mxcl.github.com/homebrew/) package manager on Mac OS
-X.
-
-~~~
-$ brew update
-$ brew install luaenv
-$ brew install lua-build
-~~~
-
-To later update these installs, use `upgrade` instead of `install`.
-
-Afterwards you'll still need to add `eval "$(luaenv init -)"` to your
-=======
 As an alternative to installation via GitHub checkout, you can install
 luaenv and [lua-build][] using the [Homebrew](http://brew.sh) package
 manager on Mac OS X:
@@ -283,7 +218,6 @@ $ brew install luaenv lua-build
 ~~~
 
 Afterwards you'll still need to add `eval "$(luaenv init -)"` to your
->>>>>>> sstephenson/master
 profile as stated in the caveats. You'll only ever have to do this
 once.
 
@@ -319,9 +253,6 @@ opposed to this idea. Here's what `luaenv init` actually does:
 Run `luaenv init -` for yourself to see exactly what happens under the
 hood.
 
-<<<<<<< HEAD
-### Uninstalling Lua Versions
-=======
 ### Installing Lua Versions
 
 The `luaenv install` command doesn't ship with luaenv out of the box, but
@@ -334,7 +265,7 @@ should be able to:
 $ luaenv install -l
 
 # install a Lua version:
-$ luaenv install 2.0.0-p247
+$ luaenv install 5.2.1
 ~~~
 
 Alternatively to the `install` command, you can download and compile
@@ -344,7 +275,6 @@ elsewhere on the filesystem. luaenv doesn't care; it will simply treat
 any entry in the `versions/` directory as a separate Lua version.
 
 ### Uninstalling Lua Versions
->>>>>>> sstephenson/master
 
 As time goes on, Lua versions you install will accumulate in your
 `~/.luaenv/versions` directory.
@@ -354,14 +284,8 @@ version you want to remove. You can find the directory of a particular
 Lua version with the `luaenv prefix` command, e.g. `luaenv prefix
 luajit-2.0.1`.
 
-<<<<<<< HEAD
-The [lua-build](https://github.com/cehoffman/lua-build) plugin
-provides an `luaenv uninstall` command to automate the removal
-process.
-=======
 The [lua-build][] plugin provides an `luaenv uninstall` command to
 automate the removal process.
->>>>>>> sstephenson/master
 
 ## Command Reference
 
@@ -517,4 +441,4 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-  [lua-build]: https://github.com/sstephenson/lua-build#readme
+  [lua-build]: https://github.com/cehoffman/lua-build#readme
