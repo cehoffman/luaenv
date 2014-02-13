@@ -20,9 +20,11 @@ elif [ "$1" = "--no-sh" ]; then
   shift
 fi
 
+IFS=: paths=($PATH)
+
 shopt -s nullglob
 
-{ for path in ${PATH//:/$'\n'}; do
+{ for path in "${paths[@]}"; do
     for command in "${path}/luaenv-"*; do
       command="${command##*luaenv-}"
       if [ -n "$sh" ]; then

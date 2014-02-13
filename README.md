@@ -19,8 +19,13 @@ names.
 
 **One thing well.** luaenv is concerned solely with switching Lua
   versions. It's simple and predictable. A rich plugin ecosystem lets
+<<<<<<< HEAD
   you tailor it to suit your needs. Compile your own Lua versions, or
   use the [lua-build](https://github.com/cehoffman/lua-build)
+=======
+  you tailor it to suit your needs. Compile your own Lua versions, or
+  use the [lua-build][]
+>>>>>>> sstephenson/master
   plugin to automate the process. Specify per-application environment
   variables with [luaenv-vars](https://github.com/cehoffman/luaenv-vars).
   See more [plugins on the
@@ -37,8 +42,14 @@ names.
   * [Basic GitHub Checkout](#basic-github-checkout)
     * [Upgrading](#upgrading)
   * [Homebrew on Mac OS X](#homebrew-on-mac-os-x)
+<<<<<<< HEAD
   * [Neckbeard Configuration](#neckbeard-configuration)
   * [Uninstalling Lua Versions](#uninstalling-lua-versions)
+=======
+  * [How luaenv hooks into your shell](#how-luaenv-hooks-into-your-shell)
+  * [Installing Lua Versions](#installing-lua-versions)
+  * [Uninstalling Lua Versions](#uninstalling-lua-versions)
+>>>>>>> sstephenson/master
 * [Command Reference](#command-reference)
   * [luaenv local](#luaenv-local)
   * [luaenv global](#luaenv-global)
@@ -103,6 +114,7 @@ reading it from the following sources, in this order:
    the [`luaenv shell`](#luaenv-shell) command to set this environment
    variable in your current shell session.
 
+<<<<<<< HEAD
 2. The application-specific `.lua-version` file in the current
    directory, if present. You can modify the current directory's
    `.lua-version` file with the [`luaenv local`](#luaenv-local)
@@ -110,6 +122,16 @@ reading it from the following sources, in this order:
 
 3. The first `.lua-version` file found by searching each parent
    directory until reaching the root of your filesystem, if any.
+=======
+2. The first `.lua-version` file found by searching the directory of the
+   script you are executing and each of its parent directories until reaching
+   the root of your filesystem.
+
+3. The first `.lua-version` file found by searching the current working
+   directory and each of its parent directories until reaching the root of your
+   filesystem. You can modify the `.lua-version` file in the current working
+   directory with the [`luaenv local`](#luaenv-local) command.
+>>>>>>> sstephenson/master
 
 4. The global `~/.luaenv/version` file. You can modify this file using
    the [`luaenv global`](#luaenv-global) command. If the global version
@@ -144,7 +166,11 @@ easy to fork and contribute any changes back upstream.
 1. Check out luaenv into `~/.luaenv`.
 
     ~~~ sh
+<<<<<<< HEAD
     $ git clone git://github.com/cehoffman/luaenv.git ~/.luaenv
+=======
+    $ git clone https://github.com/sstephenson/luaenv.git ~/.luaenv
+>>>>>>> sstephenson/master
     ~~~
 
 2. Add `~/.luaenv/bin` to your `$PATH` for access to the `luaenv`
@@ -154,7 +180,7 @@ easy to fork and contribute any changes back upstream.
     $ echo 'export PATH="$HOME/.luaenv/bin:$PATH"' >> ~/.bash_profile
     ~~~
 
-    **Ubuntu note**: Modify your `~/.profile` instead of `~/.bash_profile`.
+    **Ubuntu Desktop note**: Modify your `~/.bashrc` instead of `~/.bash_profile`.
 
     **Zsh note**: Modify your `~/.zshrc` file instead of `~/.bash_profile`.
 
@@ -164,15 +190,22 @@ easy to fork and contribute any changes back upstream.
     $ echo 'eval "$(luaenv init -)"' >> ~/.bash_profile
     ~~~
 
-    _Same as in previous step, use `~/.profile` on Ubuntu, `~/.zshrc` for Zsh._
+    _Same as in previous step, use `~/.bashrc` on Ubuntu, or `~/.zshrc` for Zsh._
 
+<<<<<<< HEAD
 4. Restart your shell as a login shell so the path changes take effect.
     You can now begin using luaenv.
+=======
+4. Restart your shell so that PATH changes take effect. (Opening a new
+   terminal tab will usually do it.) Now check if luaenv was set up:
+>>>>>>> sstephenson/master
 
     ~~~ sh
-    $ exec $SHELL -l
+    $ type luaenv
+    #=> "luaenv is a function"
     ~~~
 
+<<<<<<< HEAD
 5. Install [lua-build](https://github.com/cehoffman/lua-build),
    which provides an `luaenv install` command that simplifies the
    process of installing new Lua versions.
@@ -191,6 +224,11 @@ easy to fork and contribute any changes back upstream.
     ~~~
     $ luaenv rehash
     ~~~
+=======
+5. _(Optional)_ Install [lua-build][], which provides the
+   `luaenv install` command that simplifies the process of
+   [installing new Lua versions](#installing-lua-versions).
+>>>>>>> sstephenson/master
 
 #### Upgrading
 
@@ -210,8 +248,17 @@ $ git fetch
 $ git checkout v0.3.0
 ~~~
 
+If you've [installed via Homebrew](#homebrew-on-mac-os-x), then upgrade
+via its `brew` command:
+
+~~~ sh
+$ brew update
+$ brew upgrade luaenv lua-build
+~~~
+
 ### Homebrew on Mac OS X
 
+<<<<<<< HEAD
 You can also install luaenv using the
 [Homebrew](http://mxcl.github.com/homebrew/) package manager on Mac OS
 X.
@@ -225,10 +272,22 @@ $ brew install lua-build
 To later update these installs, use `upgrade` instead of `install`.
 
 Afterwards you'll still need to add `eval "$(luaenv init -)"` to your
+=======
+As an alternative to installation via GitHub checkout, you can install
+luaenv and [lua-build][] using the [Homebrew](http://brew.sh) package
+manager on Mac OS X:
+
+~~~
+$ brew update
+$ brew install luaenv lua-build
+~~~
+
+Afterwards you'll still need to add `eval "$(luaenv init -)"` to your
+>>>>>>> sstephenson/master
 profile as stated in the caveats. You'll only ever have to do this
 once.
 
-### Neckbeard Configuration
+### How luaenv hooks into your shell
 
 Skip this section unless you must know what every line in your shell
 profile is doing.
@@ -260,7 +319,32 @@ opposed to this idea. Here's what `luaenv init` actually does:
 Run `luaenv init -` for yourself to see exactly what happens under the
 hood.
 
+<<<<<<< HEAD
 ### Uninstalling Lua Versions
+=======
+### Installing Lua Versions
+
+The `luaenv install` command doesn't ship with luaenv out of the box, but
+is provided by the [lua-build][] project. If you installed it either
+as part of GitHub checkout process outlined above or via Homebrew, you
+should be able to:
+
+~~~ sh
+# list all available versions:
+$ luaenv install -l
+
+# install a Lua version:
+$ luaenv install 2.0.0-p247
+~~~
+
+Alternatively to the `install` command, you can download and compile
+Lua manually as a subdirectory of `~/.luaenv/versions/`. An entry in
+that directory can also be a symlink to a Lua version installed
+elsewhere on the filesystem. luaenv doesn't care; it will simply treat
+any entry in the `versions/` directory as a separate Lua version.
+
+### Uninstalling Lua Versions
+>>>>>>> sstephenson/master
 
 As time goes on, Lua versions you install will accumulate in your
 `~/.luaenv/versions` directory.
@@ -270,9 +354,14 @@ version you want to remove. You can find the directory of a particular
 Lua version with the `luaenv prefix` command, e.g. `luaenv prefix
 luajit-2.0.1`.
 
+<<<<<<< HEAD
 The [lua-build](https://github.com/cehoffman/lua-build) plugin
 provides an `luaenv uninstall` command to automate the removal
 process.
+=======
+The [lua-build][] plugin provides an `luaenv uninstall` command to
+automate the removal process.
+>>>>>>> sstephenson/master
 
 ## Command Reference
 
@@ -382,19 +471,24 @@ The luaenv source code is [hosted on
 GitHub](https://github.com/cehoffman/luaenv). It's clean, modular,
 and easy to understand, even if you're not a shell hacker.
 
+Tests are executed using [Bats](https://github.com/sstephenson/bats):
+
+    $ bats test
+    $ bats test/<file>.bats
+
 Please feel free to submit pull requests and file bugs on the [issue
 tracker](https://github.com/cehoffman/luaenv/issues).
 
 It is also likely any bugs you find exist in the original source from which
 luaenv has been adapted. Check out
-[rbenv](https://github.com/sstephenson/rbenv) to see if they have a fix that
+[luaenv](https://github.com/sstephenson/luaenv) to see if they have a fix that
 should be ported over or need the bug squashed too.
 
 ### Version History
 
 **0.4.0** (March 2, 2013)
 
-* Converted rbenv and ruby references to luaenv and lua respectively
+* Converted luaenv and lua references to luaenv and lua respectively
 * Initial public release.
 
 ### License
@@ -421,3 +515,6 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+  [lua-build]: https://github.com/sstephenson/lua-build#readme

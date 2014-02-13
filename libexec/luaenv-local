@@ -38,13 +38,14 @@ LUAENV_VERSION="$1"
 if [ "$LUAENV_VERSION" = "--unset" ]; then
   rm -f .lua-version .luaenv-version
 elif [ -n "$LUAENV_VERSION" ]; then
-  if [ "$(LUAENV_VERSION= luaenv-version-origin)" -ef .luaenv-version ]; then
+  previous_file="$(LUAENV_VERSION= luaenv-version-origin || true)"
+  luaenv-version-file-write .lua-version "$LUAENV_VERSION"
+  if [ "$previous_file" -ef .luaenv-version ]; then
     rm -f .luaenv-version
     { echo "luaenv: removed existing \`.luaenv-version' file and migrated"
       echo "       local version specification to \`.lua-version' file"
     } >&2
   fi
-  luaenv-version-file-write .lua-version "$LUAENV_VERSION"
 else
   luaenv-version-file-read .lua-version ||
   luaenv-version-file-read .luaenv-version ||

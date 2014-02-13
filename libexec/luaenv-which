@@ -63,7 +63,10 @@ else
   LUAENV_COMMAND_PATH="${LUAENV_ROOT}/versions/${LUAENV_VERSION}/bin/${LUAENV_COMMAND}"
 fi
 
-for script in $(luaenv-hooks which); do
+OLDIFS="$IFS"
+IFS=$'\n' scripts=(`luaenv-hooks which`)
+IFS="$OLDIFS"
+for script in "${scripts[@]}"; do
   source "$script"
 done
 

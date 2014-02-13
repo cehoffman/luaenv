@@ -7,7 +7,17 @@ if [ "$1" = "--complete" ]; then
   exec luaenv-rehash --complete
 fi
 
+shell="$(basename "${LUAENV_SHELL:-$SHELL}")"
+
 # When luaenv shell integration is enabled, delegate to luaenv-rehash,
 # then tell the shell to empty its command lookup cache.
 luaenv-rehash
-echo "hash -r 2>/dev/null || true"
+
+case "$shell" in
+fish )
+  # no rehash support
+  ;;
+* )
+  echo "hash -r 2>/dev/null || true"
+  ;;
+esac

@@ -7,11 +7,11 @@
 # Runs an executable by first preparing PATH so that the selected Lua
 # version's `bin' directory is at the front.
 #
-# For example, if the currently selected Lua version is 5.2.1
-#   luaenv exec lake install
+# For example, if the currently selected Lua version is 5.2.1:
+#   luaenv exec bundle install
 #
 # is equivalent to:
-#   PATH="$LUAENV_ROOT/versions/5.2.1/bin:$PATH" lake install
+#   PATH="$LUAENV_ROOT/versions/5.2.1/bin:$PATH" bundle install
 
 set -e
 [ -n "$LUAENV_DEBUG" ] && set -x
@@ -21,7 +21,7 @@ if [ "$1" = "--complete" ]; then
   exec luaenv shims --short
 fi
 
-export LUAENV_VERSION="$(luaenv-version-name)"
+LUAENV_VERSION="$(luaenv-version-name)"
 LUAENV_COMMAND="$1"
 
 if [ -z "$LUAENV_COMMAND" ]; then
@@ -29,10 +29,14 @@ if [ -z "$LUAENV_COMMAND" ]; then
   exit 1
 fi
 
+export LUAENV_VERSION
 LUAENV_COMMAND_PATH="$(luaenv-which "$LUAENV_COMMAND")"
 LUAENV_BIN_PATH="${LUAENV_COMMAND_PATH%/*}"
 
-for script in $(luaenv-hooks exec); do
+OLDIFS="$IFS"
+IFS=$'\n' scripts=(`luaenv-hooks exec`)
+IFS="$OLDIFS"
+for script in "${scripts[@]}"; do
   source "$script"
 done
 

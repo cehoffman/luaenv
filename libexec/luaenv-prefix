@@ -22,10 +22,14 @@ elif [ -z "$LUAENV_VERSION" ]; then
 fi
 
 if [ "$LUAENV_VERSION" = "system" ]; then
-  LUA_PATH="$(luaenv-which lua)"
-  LUA_PATH="${LUA_PATH%/*}"
-  echo "${LUA_PATH%/bin}"
-  exit
+  if LUA_PATH="$(luaenv-which lua 2>/dev/null)"; then
+    LUA_PATH="${LUA_PATH%/*}"
+    echo "${LUA_PATH%/bin}"
+    exit
+  else
+    echo "luaenv: system version not found in PATH" >&2
+    exit 1
+  fi
 fi
 
 LUAENV_PREFIX_PATH="${LUAENV_ROOT}/versions/${LUAENV_VERSION}"
