@@ -57,9 +57,5 @@ setup() {
   cat > ".lua-version" <<<"lua-1.8.7"
   run luaenv-version-name
   assert_success
-  assert_output <<OUT
-warning: ignoring extraneous \`lua-' prefix in version \`lua-1.8.7'
-         (set by ${PWD}/.lua-version)
-1.8.7
-OUT
+  assert_output "1.8.7"
 }

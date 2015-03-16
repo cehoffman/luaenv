@@ -2,7 +2,7 @@
 
 Use luaenv to pick a Lua version for your application and guarantee
 that your development environment matches production. It works exactly like
-[rbenv](https://github.com/sstephenson/rbenv) since it is rbenv but with lua
+[luaenv](https://github.com/sstephenson/luaenv) since it is luaenv but with lua
 names.
 
 **Powerful in development.** Specify your app's Lua version once,
@@ -49,9 +49,8 @@ names.
   * [luaenv rehash](#luaenv-rehash)
   * [luaenv which](#luaenv-which)
   * [luaenv whence](#luaenv-whence)
+* [Environment variables](#environment-variables)
 * [Development](#development)
-  * [Version History](#version-history)
-  * [License](#license)
 
 ## How It Works
 
@@ -389,6 +388,18 @@ Lists all Lua versions with the given command installed.
     5.1.5
     5.2.1
 
+## Environment variables
+
+You can affect how luaenv operates with the following settings:
+
+name | default | description
+-----|---------|------------
+`LUAENV_VERSION` | | Specifies the Lua version to be used.<br>Also see [`luaenv shell`](#luaenv-shell)
+`LUAENV_ROOT` | `~/.luaenv` | Defines the directory under which Lua versions and shims reside.<br>Also see `luaenv root`
+`LUAENV_DEBUG` | | Outputs debug information.<br>Also as: `luaenv --debug <subcommand>`
+`LUAENV_HOOK_PATH` | [_see wiki_][hooks] | Colon-separated list of paths searched for luaenv hooks.
+`LUAENV_DIR` | `$PWD` | Directory to start searching for `.lua-version` files.
+
 ## Development
 
 The luaenv source code is [hosted on
@@ -402,43 +413,6 @@ Tests are executed using [Bats](https://github.com/sstephenson/bats):
 
 Please feel free to submit pull requests and file bugs on the [issue
 tracker](https://github.com/cehoffman/luaenv/issues).
-
-It is also likely any bugs you find exist in the original source from which
-luaenv has been adapted. Check out
-[luaenv](https://github.com/sstephenson/luaenv) to see if they have a fix that
-should be ported over or need the bug squashed too.
-
-### Version History
-
-**0.4.0** (March 2, 2013)
-
-* Converted luaenv and lua references to luaenv and lua respectively
-* Initial public release.
-
-### License
-
-(The MIT license)
-
-Copyright (c) 2013 Sam Stephenson, Chris Hoffman
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
   [lua-build]: https://github.com/cehoffman/lua-build#readme

@@ -31,6 +31,31 @@ create_executable() {
   assert_success "${LUAENV_TEST_DIR}/bin/kill-all-humans"
 }
 
+@test "searches PATH for system version (shims prepended)" {
+  create_executable "${LUAENV_TEST_DIR}/bin" "kill-all-humans"
+  create_executable "${LUAENV_ROOT}/shims" "kill-all-humans"
+
+  PATH="${LUAENV_ROOT}/shims:$PATH" LUAENV_VERSION=system run luaenv-which kill-all-humans
+  assert_success "${LUAENV_TEST_DIR}/bin/kill-all-humans"
+}
+
+@test "searches PATH for system version (shims appended)" {
+  create_executable "${LUAENV_TEST_DIR}/bin" "kill-all-humans"
+  create_executable "${LUAENV_ROOT}/shims" "kill-all-humans"
+
+  PATH="$PATH:${LUAENV_ROOT}/shims" LUAENV_VERSION=system run luaenv-which kill-all-humans
+  assert_success "${LUAENV_TEST_DIR}/bin/kill-all-humans"
+}
+
+@test "searches PATH for system version (shims spread)" {
+  create_executable "${LUAENV_TEST_DIR}/bin" "kill-all-humans"
+  create_executable "${LUAENV_ROOT}/shims" "kill-all-humans"
+
+  PATH="${LUAENV_ROOT}/shims:${LUAENV_ROOT}/shims:/tmp/non-existent:$PATH:${LUAENV_ROOT}/shims" \
+    LUAENV_VERSION=system run luaenv-which kill-all-humans
+  assert_success "${LUAENV_TEST_DIR}/bin/kill-all-humans"
+}
+
 @test "version not installed" {
   create_executable "2.0" "rspec"
   LUAENV_VERSION=1.9 run luaenv-which rspec
@@ -68,7 +93,19 @@ echo HELLO="\$(printf ":%s" "\${hellos[@]}")"
 exit
 SH
 
-  LUAENV_HOOK_PATH="$hook_path" IFS=$' \t\n' run luaenv-which anything
+  LUAENV_HOOK_PATH="$hook_path" IFS=$' \t\n' LUAENV_VERSION=system run luaenv-which anything
   assert_success
   assert_output "HELLO=:hello:ugly:world:again"
+}
+
+@test "discovers version from luaenv-version-name" {
+  mkdir -p "$LUAENV_ROOT"
+  cat > "${LUAENV_ROOT}/version" <<<"1.8"
+  create_executable "1.8" "lua"
+
+  mkdir -p "$LUAENV_TEST_DIR"
+  cd "$LUAENV_TEST_DIR"
+
+  LUAENV_VERSION= run luaenv-which lua
+  assert_success "${LUAENV_ROOT}/versions/1.8/bin/lua"
 }

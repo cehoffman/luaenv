@@ -1,7 +1,15 @@
 unset LUAENV_VERSION
 unset LUAENV_DIR
 
-LUAENV_TEST_DIR="${BATS_TMPDIR}/luaenv"
+if enable -f "${BATS_TEST_DIRNAME}"/../libexec/luaenv-realpath.dylib realpath 2>/dev/null; then
+  LUAENV_TEST_DIR="$(realpath "$BATS_TMPDIR")/luaenv"
+else
+  if [ -n "$LUAENV_NATIVE_EXT" ]; then
+    echo "luaenv: failed to load \`realpath' builtin" >&2
+    exit 1
+  fi
+  LUAENV_TEST_DIR="${BATS_TMPDIR}/luaenv"
+fi
 
 # guard against executing this block twice due to bats internals
 if [ "$LUAENV_ROOT" != "${LUAENV_TEST_DIR}/root" ]; then

@@ -24,6 +24,12 @@ stub_system_lua() {
   assert_success "* system (set by ${LUAENV_ROOT}/version)"
 }
 
+@test "not even system lua available" {
+  PATH="$(path_without lua)" run luaenv-versions
+  assert_failure
+  assert_output "Warning: no Lua detected on the system"
+}
+
 @test "bare output no versions installed" {
   assert [ ! -d "${LUAENV_ROOT}/versions" ]
   run luaenv-versions --bare
@@ -111,5 +117,25 @@ OUT
   system
 * 1.9.3 (set by ${LUAENV_TEST_DIR}/.lua-version)
   2.0.0
+OUT
+}
+
+@test "ignores non-directories under versions" {
+  create_version "1.9"
+  touch "${LUAENV_ROOT}/versions/hello"
+
+  run luaenv-versions --bare
+  assert_success "1.9"
+}
+
+@test "lists symlinks under versions" {
+  create_version "1.8.7"
+  ln -s "1.8.7" "${LUAENV_ROOT}/versions/1.8"
+
+  run luaenv-versions --bare
+  assert_success
+  assert_output <<OUT
+1.8
+1.8.7
 OUT
 }

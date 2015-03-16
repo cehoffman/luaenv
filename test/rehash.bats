@@ -53,7 +53,7 @@ lua
 OUT
 }
 
-@test "removes stale shims" {
+@test "removes outdated shims" {
   mkdir -p "${LUAENV_ROOT}/shims"
   touch "${LUAENV_ROOT}/shims/oldshim1"
   chmod +x "${LUAENV_ROOT}/shims/oldshim1"
@@ -65,6 +65,25 @@ OUT
   assert_success ""
 
   assert [ ! -e "${LUAENV_ROOT}/shims/oldshim1" ]
+}
+
+@test "do exact matches when removing stale shims" {
+  create_executable "2.0" "unicorn_rails"
+  create_executable "2.0" "rspec-core"
+
+  luaenv-rehash
+
+  cp "$LUAENV_ROOT"/shims/{rspec-core,rspec}
+  cp "$LUAENV_ROOT"/shims/{rspec-core,rails}
+  cp "$LUAENV_ROOT"/shims/{rspec-core,uni}
+  chmod +x "$LUAENV_ROOT"/shims/{rspec,rails,uni}
+
+  run luaenv-rehash
+  assert_success ""
+
+  assert [ ! -e "${LUAENV_ROOT}/shims/rails" ]
+  assert [ ! -e "${LUAENV_ROOT}/shims/rake" ]
+  assert [ ! -e "${LUAENV_ROOT}/shims/uni" ]
 }
 
 @test "binary install locations containing spaces" {
