@@ -2,7 +2,7 @@
 
 Use luaenv to pick a Lua version for your application and guarantee
 that your development environment matches production. It works exactly like
-[luaenv](https://github.com/sstephenson/luaenv) since it is luaenv but with lua
+[rbenv](https://github.com/sstephenson/rbenv) since it is rbenv but with lua
 names.
 
 **Powerful in development.** Specify your app's Lua version once,
