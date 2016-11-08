@@ -179,6 +179,10 @@ easy to fork and contribute any changes back upstream.
    `luaenv install` command that simplifies the process of
    [installing new Lua versions](#installing-lua-versions).
 
+6. _(Optional)_ Install [luaenv-luarocks][], which provides the
+   `luaenv luarocks` command that simplifies the process of
+   [installing LuaRocks][luaenv-luarocks-usage] for current Lua in luaenv.
+
 #### Upgrading
 
 If you've installed luaenv manually using git, you can upgrade your
@@ -416,3 +420,6 @@ tracker](https://github.com/cehoffman/luaenv/issues).
 
 
   [lua-build]: https://github.com/cehoffman/lua-build#readme
+
+  [luaenv-luarocks]: https://github.com/xpol/luaenv-luarocks
+  [luaenv-luarocks-usage]: https://github.com/xpol/luaenv-luarocks#usage
