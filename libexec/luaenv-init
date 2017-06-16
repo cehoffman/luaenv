@@ -70,8 +70,8 @@ mkdir -p "${LUAENV_ROOT}/"{shims,versions}
 
 case "$shell" in
 fish )
-  echo "setenv PATH '${LUAENV_ROOT}/shims' \$PATH"
-  echo "setenv LUAENV_SHELL $shell"
+  echo "set -gx PATH '${LUAENV_ROOT}/shims' \$PATH"
+  echo "set -gx LUAENV_SHELL $shell"
 ;;
 * )
   echo 'export PATH="'${LUAENV_ROOT}'/shims:${PATH}"'
