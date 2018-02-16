@@ -1,0 +1,12 @@
+[submodule "plugins/lua-build"]
+	path = plugins/lua-build
+	url = https://github.com/cehoffman/lua-build
+[submodule "plugins/luaenv-vars"]
+	path = plugins/luaenv-vars
+	url = https://github.com/cehoffman/luaenv-vars
+[submodule "plugins/luaenv-each-"]
+	path = plugins/luaenv-each-
+	url = https://github.com/cehoffman/luaenv-each
+[submodule "plugins/luaenv-each"]
+	path = plugins/luaenv-each
+	url = https://github.com/cehoffman/luaenv-each
