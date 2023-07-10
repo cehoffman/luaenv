@@ -81,10 +81,7 @@ esac
 
 completion="${root}/completions/luaenv.${shell}"
 if [ -r "$completion" ]; then
-  case "$shell" in
-  fish ) echo ". '$completion'" ;;
-  *    ) echo "source '$completion'" ;;
-  esac
+  echo "source '$completion'"
 fi
 
 if [ -z "$no_rehash" ]; then
